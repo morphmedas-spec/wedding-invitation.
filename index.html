@@ -8,7 +8,7 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background: radial-gradient(circle, #0b2318 0%, #040c08 100%);
+            background: radial-gradient(circle, #0b2318 0%, #030a06 100%);
             color: #f7eedd;
             font-family: 'Amiri', serif;
             display: flex;
@@ -19,158 +19,234 @@
             padding: 15px;
         }
 
-        /* حاوية الظرف */
+        /* شاشة الظرف */
         .envelope-container {
             text-align: center;
             cursor: pointer;
             transition: transform 0.4s ease;
         }
-        .envelope-container:hover {
-            transform: scale(1.03);
-        }
+        .envelope-container:hover { transform: scale(1.04); }
         .envelope {
             width: 320px;
             height: 220px;
             background: linear-gradient(135deg, #0d281c 0%, #05100a 100%);
             border: 2px solid #d4af37;
             border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 20px rgba(212, 175, 55, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
-        .envelope::before {
-            content: '✉️';
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .envelope::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            border: 1px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 8px;
         }
         .envelope-text {
             font-family: 'Reem Kufi', sans-serif;
             color: #d4af37;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
+            font-size: 1.15rem;
+            z-index: 1;
         }
 
-        /* كارت الدعوة (مخفية في الأول) */
-        .card {
+        /* الإطار الرئيسي والدعوة */
+        .card-frame {
             display: none;
             width: 100%;
             max-width: 400px;
+            min-height: 480px;
             background: linear-gradient(145deg, #0d281c 0%, #05100a 100%);
-            border: 1px solid #d4af37;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 25px rgba(212,175,55,0.15);
             padding: 35px 25px;
             text-align: center;
-            border-radius: 16px;
             position: relative;
-            animation: fadeIn 0.8s ease-in-out forwards;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* زخرفة الأركان للإطار (Frame Luxury) */
+        .corner-decoration {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border: 2px solid #d4af37;
+        }
+        .top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        /* التحكم في التتابع / السلاسل (Sequences) */
+        .sequence {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.7s ease-in-out forwards;
+        }
+        .sequence.active {
+            display: block;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .bismillah { font-size: 1.1rem; color: #d4af37; margin-bottom: 15px; font-weight: bold; }
-        .title { font-family: 'Reem Kufi', sans-serif; font-size: 1.25rem; color: #e2d2a5; margin-bottom: 5px; }
-        .subtitle { font-size: 0.95rem; color: #bfa878; margin-bottom: 15px; }
+        /* المحتوى والخطوط */
+        .bismillah { font-size: 1.2rem; color: #d4af37; margin-bottom: 25px; font-weight: bold; }
+        .title { font-family: 'Reem Kufi', sans-serif; font-size: 1.3rem; color: #e2d2a5; margin-bottom: 15px; line-height: 1.6; }
+        .subtitle { font-size: 1.05rem; color: #c4b28a; line-height: 1.7; }
         
-        .names-box {
-            margin: 20px 0;
-            padding: 12px 0;
-            border-top: 1px solid rgba(212,175,55,0.3);
-            border-bottom: 1px solid rgba(212,175,55,0.3);
-        }
-        .names { font-family: 'Reem Kufi', sans-serif; font-size: 1.7rem; color: #f3d98c; line-height: 1.5; }
-        .ampersand { font-size: 1.1rem; color: #fff; display: block; margin: 2px 0; opacity: 0.8; }
+        .names-box { margin: 30px 0; }
+        .names { font-family: 'Reem Kufi', sans-serif; font-size: 2rem; color: #f3d98c; line-height: 1.6; }
+        .ampersand { font-size: 1.2rem; color: #fff; display: block; margin: 10px 0; opacity: 0.8; }
 
         .details-box {
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.3);
             text-align: right;
         }
-        .detail-row { display: flex; align-items: center; margin-bottom: 10px; font-size: 1rem; }
+        .detail-row { display: flex; align-items: center; margin-bottom: 15px; font-size: 1.05rem; }
         .detail-row:last-child { margin-bottom: 0; }
-        .detail-icon { margin-left: 10px; color: #d4af37; font-size: 1.1rem; }
-        .detail-text span { display: block; font-size: 0.8rem; color: #a3916b; }
+        .detail-icon { margin-left: 12px; color: #d4af37; font-size: 1.2rem; }
+        .detail-text span { display: block; font-size: 0.85rem; color: #a3916b; }
 
-        .rsvp-btn {
-            display: block;
+        /* الأزرار والتنقل */
+        .nav-btn, .rsvp-btn {
+            display: inline-block;
             width: 100%;
             background: linear-gradient(135deg, #d4af37 0%, #aa8220 100%);
             color: #05100a;
-            padding: 12px;
+            padding: 13px;
             font-size: 1.1rem;
             font-family: 'Reem Kufi', sans-serif;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 30px;
             font-weight: bold;
-            margin-top: 15px;
+            border: none;
+            cursor: pointer;
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
             transition: 0.3s;
+            margin-top: 15px;
         }
-        .rsvp-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-        .footer-note { margin-top: 15px; font-size: 0.85rem; color: #8c7853; }
+        .nav-btn:hover, .rsvp-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* مؤشر المراحل (Dots) */
+        .dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+        }
+        .dot.active {
+            background: #d4af37;
+            width: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- الظرف الذي سيتم النقر عليه لفتح الدعوة -->
-    <div class="envelope-container" id="envelopeContainer" onclick="openInvitation()">
+    <!-- الشاشة الأولى: الظرف -->
+    <div class="envelope-container" id="envelopeContainer" onclick="startInvitation()">
         <div class="envelope">
-            <div class="envelope-text">اضغط لفتح دعوة الزفاف</div>
+            <div class="envelope-text">✉️ اضغط لفتح الدعوة</div>
         </div>
     </div>
 
-    <!-- كارت الدعوة الفخمة -->
-    <div class="card" id="invitationCard">
-        <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-        <div class="title">دعوة خاصة لحضور زفافنا المبارك</div>
-        <div class="subtitle">يسرنا أن نشارككم ليلة العمر</div>
+    <!-- الإطار الرئيسي والدعوة المقسمة إلى مراحل -->
+    <div class="card-frame" id="cardFrame">
+        <!-- زوايا زخرفية للإطار -->
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration top-right"></div>
+        <div class="corner-decoration bottom-left"></div>
+        <div class="corner-decoration bottom-right"></div>
 
-        <div class="names-box">
-            <div class="names">
-                زينب ابن تاتو
-                <span class="ampersand">و</span>
-                خالد بابا
-            </div>
+        <!-- السلسلة 1: الترحيب والافتتاحية -->
+        <div class="sequence active" id="seq1">
+            <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="title">بأجواء الفرح والسرور والتقاليد المغربية العريقة</div>
+            <div class="subtitle">يتشرف أفراد العائلة بدعوتكم لمشاركتنا فرحة العمر في ليلة من أبهى الليالي</div>
+            <button class="nav-btn" onclick="nextSeq(2)">متابعة الدعوة ←</button>
         </div>
 
-        <div class="details-box">
-            <div class="detail-row">
-                <div class="detail-icon">📅</div>
-                <div class="detail-text">
-                    <span>التاريخ</span>
-                    الجمعة 23 أكتوبر 2026
+        <!-- السلسلة 2: إعلان أسماء العروسين -->
+        <div class="sequence" id="seq2">
+            <div class="subtitle">ببالغ الزينة والفرح نعلن زفاف</div>
+            <div class="names-box">
+                <div class="names">
+                    زينب ابن تاتو
+                    <span class="ampersand">و</span>
+                    خالد بابا
                 </div>
             </div>
-            <div class="detail-row">
-                <div class="detail-icon">📍</div>
-                <div class="detail-text">
-                    <span>المكان</span>
-                    قاعة حفلات La Perla - فاس
-                </div>
-            </div>
+            <div class="subtitle">بارك الله لهما وبارك عليهما وجمع بينهما في خير</div>
+            <button class="nav-btn" onclick="nextSeq(3)">معلومات الموعد والمكان ←</button>
         </div>
 
-        <p style="font-size: 0.95rem; margin-bottom: 15px; color: #e2d2a5;">حضوركم يزيدنا شرفاً وبهجة لتكتمل فرحتنا.</p>
+        <!-- السلسلة 3: التفاصيل وتأكيد الحضور -->
+        <div class="sequence" id="seq3">
+            <div class="details-box">
+                <div class="detail-row">
+                    <div class="detail-icon">📅</div>
+                    <div class="detail-text">
+                        <span>التاريخ</span>
+                        الجمعة 23 أكتوبر 2026
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-icon">📍</div>
+                    <div class="detail-text">
+                        <span>المكان</span>
+                        قاعة حفلات La Perla - فاس
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 0.95rem; color: #e2d2a5;">حضوركم يزيدنا شرفاً وتكتمل به فرحتنا</p>
+            
+            <a href="https://forms.gle/YOUR_GOOGLE_FORM_LINK" target="_blank" class="rsvp-btn">تأكيد الحضور (RSVP)</a>
+        </div>
 
-        <!-- استبدل الرابط أدناه برابط Google Form الخاص بك -->
-        <a href="https://forms.gle/YOUR_GOOGLE_FORM_LINK" target="_blank" class="rsvp-btn">تأكيد الحضور (RSVP)</a>
-
-        <div class="footer-note">بانتظار أن تشاركونا أجمل لحظات العمر</div>
+        <!-- نقاط مؤشر التصفح -->
+        <div class="dots" id="dotsContainer" style="display:none;">
+            <div class="dot active" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+            <div class="dot" id="dot3"></div>
+        </div>
     </div>
 
     <script>
-        function openInvitation() {
+        function startInvitation() {
             document.getElementById('envelopeContainer').style.display = 'none';
-            document.getElementById('invitationCard').style.display = 'block';
+            document.getElementById('cardFrame').style.display = 'flex';
+            document.getElementById('dotsContainer').style.display = 'flex';
+        }
+
+        function nextSeq(seqNumber) {
+            // إخفاء كل السلاسل
+            document.querySelectorAll('.sequence').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.dot').forEach(el => el.classList.remove('active'));
+
+            // إظهار السلسلة المطلوبة والنقطة الموافقة لها
+            document.getElementById('seq' + seqNumber).classList.add('active');
+            document.getElementById('dot' + seqNumber).classList.add('active');
         }
     </script>
 </body>
