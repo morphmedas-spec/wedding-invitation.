@@ -4,58 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دعوة زفاف زينب وخالد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            background-color: #0a1911;
-            color: #f4e8c1;
+            background: radial-gradient(circle, #0b2318 0%, #040c08 100%);
+            color: #f7eedd;
             font-family: 'Amiri', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden;
+            padding: 15px;
         }
         .invitation-card {
             width: 100%;
-            max-width: 420px;
-            background: linear-gradient(135deg, #0f261b 0%, #06110b 100%);
-            border: 2px solid #d4af37;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            padding: 40px 20px;
+            max-width: 400px;
+            background: linear-gradient(145deg, #0d281c 0%, #05100a 100%);
+            border: 1px solid #d4af37;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.9), inset 0 0 15px rgba(212,175,55,0.15);
+            padding: 35px 25px;
             text-align: center;
+            border-radius: 16px;
+            position: relative;
+        }
+        /* إطارات جمالية داخلية */
+        .invitation-card::before {
+            content: '';
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 1px dashed rgba(212, 175, 55, 0.4);
             border-radius: 12px;
-            margin: 20px;
+            pointer-events: none;
         }
-        .bismillah { font-size: 1.2rem; color: #d4af37; margin-bottom: 20px; letter-spacing: 1px; }
-        .title { font-family: 'Reem Kufi', sans-serif; font-size: 1.4rem; margin-bottom: 15px; color: #ffffff; }
-        .names { font-size: 1.9rem; color: #d4af37; margin: 20px 0; font-weight: bold; line-height: 1.5; }
-        .ampersand { font-size: 1.3rem; color: #ffffff; display: block; margin: 5px 0; }
-        .details {
-            background: rgba(212, 175, 55, 0.05);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 20px;
+        .bismillah {
+            font-size: 1.1rem;
+            color: #d4af37;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+        .title {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: #e2d2a5;
+        }
+        .subtitle {
+            font-size: 0.95rem;
+            color: #bfa878;
+            margin-bottom: 20px;
+        }
+        .names-box {
             margin: 25px 0;
-            font-size: 1.1rem;
-            line-height: 1.8;
+            padding: 15px 0;
+            border-top: 1px solid rgba(212,175,55,0.3);
+            border-bottom: 1px solid rgba(212,175,55,0.3);
         }
-        .details strong { color: #d4af37; display: block; margin-top: 10px; }
-        .rsvp-btn {
-            display: inline-block;
-            background-color: #d4af37;
-            color: #0a1911;
-            padding: 12px 30px;
+        .names {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 1.7rem;
+            color: #f3d98c;
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+        }
+        .ampersand {
             font-size: 1.1rem;
+            color: #ffffff;
+            display: block;
+            margin: 2px 0;
+            opacity: 0.8;
+        }
+        .details-box {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: right;
+        }
+        .detail-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+        .detail-icon {
+            margin-left: 10px;
+            color: #d4af37;
+            font-size: 1.2rem;
+        }
+        .detail-text span {
+            display: block;
+            font-size: 0.85rem;
+            color: #a3916b;
+        }
+        .closing-text {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #e2d2a5;
+        }
+        .rsvp-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #d4af37 0%, #aa8220 100%);
+            color: #05100a;
+            padding: 14px;
+            font-size: 1.15rem;
             font-family: 'Reem Kufi', sans-serif;
             text-decoration: none;
-            border-radius: 30px;
+            border-radius: 8px;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.35);
         }
-        .footer-note { margin-top: 30px; font-size: 0.9rem; color: #b5b5b5; }
+        .rsvp-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+        .footer-note {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #8c7853;
+        }
     </style>
 </head>
 <body>
@@ -64,25 +138,39 @@
         <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
         
         <div class="title">بأجواء الفرح والتقاليد المغربية العريقة</div>
-        <p style="font-size: 1rem; color: #dcdcdc; margin-bottom: 10px;">يسرنا أن نشارككم ليلة العمر في زفاف أختنا الغالية</p>
+        <div class="subtitle">يسرنا أن نشارككم ليلة العمر في زفاف أختنا الغالية</div>
 
-        <div class="names">
-            زينب ابن تاتو
-            <span class="ampersand">&</span>
-            خالد بابا
+        <div class="names-box">
+            <div class="names">
+                زينب ابن تاتو
+                <span class="ampersand">و</span>
+                خالد بابا
+            </div>
         </div>
 
-        <div class="details">
-            📅 <strong>التاريخ:</strong> الجمعة 23 أكتوبر 2026
-            <br>
-            📍 <strong>المكان:</strong> قاعة حفلات La Perla - فاس
+        <div class="details-box">
+            <div class="detail-row">
+                <div class="detail-icon">📅</div>
+                <div class="detail-text">
+                    <span>التاريخ</span>
+                    الجمعة 23 أكتوبر 2026
+                </div>
+            </div>
+            <div class="detail-row" style="margin-top: 15px;">
+                <div class="detail-icon">📍</div>
+                <div class="detail-text">
+                    <span>المكان</span>
+                    قاعة حفلات La Perla - فاس
+                </div>
+            </div>
         </div>
 
-        <p style="margin-bottom: 20px; font-size: 1.05rem;">حضوركم يزيدنا شرفاً وبهجة لتكتمل فرحتنا.</p>
+        <div class="closing-text">حضوركم يزيدنا شرفاً وبهجة لتكتمل فرحتنا.</div>
 
+        <!-- رابط Google Form -->
         <a href="https://forms.gle/YOUR_GOOGLE_FORM_LINK" target="_blank" class="rsvp-btn">تأكيد الحضور (RSVP)</a>
 
-        <div class="footer-note">بانتظار أن تشاركونا أجمل لحظات العمر ❤️</div>
+        <div class="footer-note">بانتظار أن تشاركونا أجمل لحظات العمر</div>
     </div>
 
 </body>
