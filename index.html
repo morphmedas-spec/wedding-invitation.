@@ -17,9 +17,31 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 15px;
             overflow-x: hidden;
+            position: relative;
         }
+
+        /* زر الموسيقى العائمة */
+        .music-control {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(13, 40, 28, 0.9);
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 100;
+            transition: 0.3s;
+        }
+        .music-control:hover { transform: scale(1.1); }
+        .music-control span { font-size: 1.2rem; }
 
         /* شاشة الظرف */
         .envelope-container {
@@ -58,7 +80,7 @@
             z-index: 1;
         }
 
-        /* الإطار الرئيسي والدعوة المقسمة إلى مراحل */
+        /* الإطار الرئيسي */
         .card-frame {
             display: none;
             width: 100%;
@@ -103,7 +125,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* المحتوى والخطوط متناسقة */
+        /* المحتوى والخطوط */
         .bismillah { font-size: 1.1rem; color: #d4af37; margin-bottom: 10px; font-weight: bold; }
         .title { font-family: 'Reem Kufi', sans-serif; font-size: 1.1rem; color: #e2d2a5; margin-bottom: 8px; line-height: 1.5; }
         .subtitle { font-size: 0.9rem; color: #c4b28a; line-height: 1.5; }
@@ -112,7 +134,7 @@
         .names { font-family: 'Reem Kufi', sans-serif; font-size: 1.6rem; color: #f3d98c; line-height: 1.4; }
         .ampersand { font-size: 1rem; color: #fff; display: block; margin: 4px 0; opacity: 0.8; }
 
-        /* العد التنازلي الأنيق (يظهر في النهاية فقط) */
+        /* العد التنازلي الأنيق */
         .countdown-box {
             display: flex;
             justify-content: center;
@@ -144,7 +166,7 @@
         .detail-icon { margin-left: 8px; color: #d4af37; font-size: 1rem; }
         .detail-text span { display: block; font-size: 0.7rem; color: #a3916b; }
 
-        /* الأزرار والتنقل */
+        /* الأزرار */
         .nav-btn, .rsvp-btn {
             display: inline-block;
             width: 100%;
@@ -164,7 +186,7 @@
         }
         .nav-btn:hover, .rsvp-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
-        /* مؤشر المراحل (Dots) */
+        /* نقاط مؤشر التصفح */
         .dots {
             display: flex;
             gap: 6px;
@@ -186,6 +208,17 @@
 </head>
 <body>
 
+    <!-- زر التحكم بالموسيقى (موسيقى عيساوية مغربية) -->
+    <div class="music-control" id="musicToggle" onclick="toggleMusic()" title="تشغيل/إيقاف الموسيقى">
+        <span id="musicIcon">🔇</span>
+    </div>
+
+    <!-- ملف الصوت العيساوي (رابط مباشر لمقطع عيساوي تقليدي مغربي) -->
+    <audio id="bgMusic" loop>
+        <source src="https://ia801309.us.archive.org/24/items/MoroccanMusic/Issawa.mp3" type="audio/mpeg">
+        متصفحك لا يدعم تشغيل الصوت.
+    </audio>
+
     <!-- الشاشة الأولى: الظرف -->
     <div class="envelope-container" id="envelopeContainer" onclick="startInvitation()">
         <div class="envelope">
@@ -195,13 +228,12 @@
 
     <!-- الإطار الرئيسي والدعوة المقسمة إلى مراحل -->
     <div class="card-frame" id="cardFrame">
-        <!-- زوايا زخرفية للإطار -->
         <div class="corner-decoration top-left"></div>
         <div class="corner-decoration top-right"></div>
         <div class="corner-decoration bottom-left"></div>
         <div class="corner-decoration bottom-right"></div>
 
-        <!-- السلسلة 1: الترحيب والافتتاحية (بدون عد تنازلي) -->
+        <!-- السلسلة 1: الترحيب والافتتاحية -->
         <div class="sequence active" id="seq1">
             <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
             <div class="title">بأجواء الفرح والسرور والتقاليد المغربية العريقة</div>
@@ -245,18 +277,16 @@
             </div>
             <p style="font-size: 0.8rem; color: #e2d2a5; margin-bottom: 4px;">المرجو تأكيد الحضور لترتيب استقبالكم أحسن استقبال</p>
             
-            <!-- زر لتأكيد الحضور والانتقال للعد التنازلي -->
             <a href="https://forms.gle/YOUR_GOOGLE_FORM_LINK" target="_blank" class="rsvp-btn" onclick="event.preventDefault(); nextSeq(4);">تأكيد الحضور (RSVP)</a>
             <button class="nav-btn" style="margin-top: 6px; background: transparent; border: 1px solid #d4af37; color: #d4af37; padding: 8px;" onclick="nextSeq(4)">تخطى إلى العد التنازلي ←</button>
         </div>
 
-        <!-- السلسلة 4: العد التنازلي (تظهر حصرياً فالاختتام مورا تأكيد الحضور) -->
+        <!-- السلسلة 4: العد التنازلي -->
         <div class="sequence" id="seq4">
             <div class="bismillah">شكراً لتأكيد حضوركم! ❤️</div>
             <div class="title" style="font-size: 1rem;">العد التنازلي لليلة العمر</div>
             <div class="subtitle" style="font-size: 0.8rem;">ننتظر لقاءكم بفارغ الصبر لتكتمل فرحتنا</div>
             
-            <!-- العد التنازلي -->
             <div class="countdown-box">
                 <div class="time-block"><div class="time-num" id="days">00</div><div class="time-label">يوم</div></div>
                 <div class="time-block"><div class="time-num" id="hours">00</div><div class="time-label">ساعة</div></div>
@@ -276,7 +306,6 @@
     </div>
 
     <script>
-        // العد التنازلي لـ 23 أكتوبر 2026
         const targetDate = new Date("October 23, 2026 00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
@@ -288,10 +317,33 @@
             }
         }, 1000);
 
+        const music = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.innerText = "🔇";
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    musicIcon.innerText = "🎵";
+                    isPlaying = true;
+                }).catch(e => console.log("Audio play blocked"));
+            }
+        }
+
         function startInvitation() {
             document.getElementById('envelopeContainer').style.display = 'none';
             document.getElementById('cardFrame').style.display = 'flex';
             document.getElementById('dotsContainer').style.display = 'flex';
+            
+            // تشغيل الموسيقى أوتوماتيكياً بمجرد فتح الظرف
+            music.play().then(() => {
+                musicIcon.innerText = "🎵";
+                isPlaying = true;
+            }).catch(e => console.log("Auto-play restricted"));
         }
 
         function nextSeq(seqNumber) {
