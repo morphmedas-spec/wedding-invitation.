@@ -8,7 +8,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            /* خلفية دافئة متناسقة مع ألوان البيج والوردي ديال التصويرة */
             background: 
                 radial-gradient(circle, rgba(61,48,43,0.95) 0%, rgba(28,21,18,0.98) 100%),
                 url('https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
@@ -24,7 +23,6 @@
             text-align: right;
         }
 
-        /* زر الموسيقى بألوان منسقة */
         .music-toggle {
             position: fixed;
             top: 15px;
@@ -42,7 +40,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
-        /* شاشة الظرف بألوان بيج دافئة تتماشى مع الورود والتصويرة */
         .envelope-container {
             text-align: center;
             cursor: pointer;
@@ -77,7 +74,6 @@
             z-index: 1;
         }
 
-        /* حاوية التصويرة والدعوة */
         .invitation-content {
             display: none;
             width: 100%;
@@ -93,7 +89,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* إطار التصويرة */
         .card-image-box {
             width: 100%;
             border: 2px solid #c5a059;
@@ -108,7 +103,6 @@
             display: block;
         }
 
-        /* العد التنازلي بتصميم منسق */
         .countdown-card {
             width: 100%;
             background: linear-gradient(145deg, rgba(61,48,43,0.95) 0%, rgba(28,21,18,0.98) 100%);
@@ -143,30 +137,23 @@
 </head>
 <body>
 
-    <!-- ملف الصوت -->
     <audio id="bgMusic" loop>
         <source src="wedding-music.mp3" type="audio/mp3">
     </audio>
 
-    <!-- زر الموسيقى -->
     <button class="music-toggle" id="musicToggleBtn" onclick="toggleMusic()">🔊 الموسيقى</button>
 
-    <!-- شاشة الظرف -->
     <div class="envelope-container" id="envelopeContainer" onclick="startInvitation()">
         <div class="envelope">
             <div class="envelope-text">اضغط لفتح الدعوة ✉</div>
         </div>
     </div>
 
-    <!-- محتوى الدعوة (التصويرة + العد التنازلي) -->
     <div class="invitation-content" id="invitationContent">
-        <!-- التصويرة ديالتك -->
         <div class="card-image-box">
-            <!-- استبدل wedding-invitation.jpg باسم التصويرة فـ GitHub -->
-            <img src="wedding-invitation.jpg" alt="دعوة زفاف زينب وخالد">
+            <img src="wedding.jpg" alt="دعوة زفاف زينب وخالد">
         </div>
 
-        <!-- العد التنازلي -->
         <div class="countdown-card">
             <div class="countdown-title">العد التنازلي لليلة العمر ❤️</div>
             <div class="countdown-box">
@@ -178,7 +165,6 @@
     </div>
 
     <script>
-        // تاريخ الزفاف: 13 نوفمبر 2026
         const targetDate = new Date("November 13, 2026 00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
