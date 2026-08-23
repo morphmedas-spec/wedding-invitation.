@@ -40,6 +40,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
 
+        /* شاشة الظرف */
         .envelope-container {
             text-align: center;
             cursor: pointer;
@@ -74,6 +75,42 @@
             z-index: 1;
         }
 
+        /* اختيار اللغات */
+        .language-selection {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            width: 90%;
+            max-width: 320px;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+        .lang-title {
+            font-family: 'Reem Kufi', sans-serif;
+            color: #e6c587;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .lang-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #3d302b 0%, #1c1512 100%);
+            border: 1.5px solid #c5a059;
+            color: #e6c587;
+            padding: 12px;
+            border-radius: 10px;
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+        .lang-btn:hover {
+            background: #c5a059;
+            color: #1c1512;
+        }
+
+        /* محتوى الدعوة والسلايدر */
         .invitation-content {
             display: none;
             width: 100%;
@@ -103,56 +140,96 @@
             display: block;
         }
 
+        /* أزرار التنقل بين التصاور (السلايدر) */
+        .slider-nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 10px;
+        }
+        .nav-btn {
+            flex: 1;
+            background: rgba(61,48,43,0.9);
+            border: 1px solid #c5a059;
+            color: #e6c587;
+            padding: 8px;
+            border-radius: 8px;
+            font-family: 'Reem Kufi', sans-serif;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transition: 0.2s;
+        }
+        .nav-btn:hover {
+            background: #c5a059;
+            color: #1c1512;
+        }
+
+        /* العد التنازلي */
         .countdown-card {
             width: 100%;
             background: linear-gradient(145deg, rgba(61,48,43,0.95) 0%, rgba(28,21,18,0.98) 100%);
             border: 1.5px solid #c5a059;
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             box-shadow: 0 8px 20px rgba(0,0,0,0.7);
         }
         .countdown-title {
             font-family: 'Reem Kufi', sans-serif;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #e6c587;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .countdown-box {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
         .time-block {
             background: rgba(197, 160, 89, 0.1);
             border: 1px solid rgba(197, 160, 89, 0.3);
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             text-align: center;
-            min-width: 60px;
+            min-width: 50px;
         }
-        .time-num { font-size: 1.1rem; color: #e6c587; font-weight: bold; font-family: 'Reem Kufi', sans-serif; }
-        .time-label { font-size: 0.7rem; color: #b8975b; }
+        .time-num { font-size: 1rem; color: #e6c587; font-weight: bold; font-family: 'Reem Kufi', sans-serif; }
+        .time-label { font-size: 0.65rem; color: #b8975b; }
     </style>
 </head>
 <body>
 
-    <!-- ملف الموسيقى (تأكد أن اسم الملف هنا يطابق اسم ملف الـ mp3 الذي رفعته) -->
     <audio id="bgMusic" loop>
-        <source src="wedding.mp3" type="audio/mp3">
+        <source src="music.mp3" type="audio/mp3">
     </audio>
 
     <button class="music-toggle" id="musicToggleBtn" onclick="toggleMusic()">🔊 الموسيقى</button>
 
-    <div class="envelope-container" id="envelopeContainer" onclick="startInvitation()">
+    <!-- شاشة الظرف -->
+    <div class="envelope-container" id="envelopeContainer" onclick="openEnvelope()">
         <div class="envelope">
             <div class="envelope-text">اضغط لفتح الدعوة ✉</div>
         </div>
     </div>
 
+    <!-- اختيار اللغة -->
+    <div class="language-selection" id="languageSelection">
+        <div class="lang-title">المرجو اختيار لغة الدعوة</div>
+        <button class="lang-btn" onclick="selectLanguage('ar')">العربية 🇲🇦</button>
+        <button class="lang-btn" onclick="selectLanguage('fr')">Français 🇫🇷</button>
+        <button class="lang-btn" onclick="selectLanguage('en')">English 🇬🇧</button>
+    </div>
+
+    <!-- محتوى الدعوة -->
     <div class="invitation-content" id="invitationContent">
         <div class="card-image-box">
-            <img src="wedding.jpg" alt="دعوة زفاف زينب وخالد">
+            <img id="invitationImage" src="" alt="دعوة زفاف">
+        </div>
+
+        <div class="slider-nav">
+            <button class="nav-btn" onclick="changeSlide(-1)">▶ السابق</button>
+            <button class="nav-btn" onclick="changeSlide(1)">التالي ◀</button>
         </div>
 
         <div class="countdown-card">
@@ -166,6 +243,47 @@
     </div>
 
     <script>
+        let currentLang = 'ar';
+        let currentIndex = 0;
+        
+        const images = {
+            ar: ['ZAINAB/AR/ar-1.jpeg', 'ZAINAB/AR/ar-2.jpeg', 'ZAINAB/AR/ar-3.jpeg'],
+            fr: ['ZAINAB/FR/fr-1.jpeg', 'ZAINAB/FR/fr-2.jpeg', 'ZAINAB/FR/fr-3.jpeg'],
+            en: ['ZAINAB/ENG/eng-1.jpeg', 'ZAINAB/ENG/eng-2.jpeg', 'ZAINAB/ENG/eng-3.jpeg']
+        };
+
+        function openEnvelope() {
+            const music = document.getElementById('bgMusic');
+            music.play().catch(error => console.log("Audio play blocked", error));
+            
+            document.getElementById('envelopeContainer').style.display = 'none';
+            document.getElementById('languageSelection').style.display = 'flex';
+            document.getElementById('musicToggleBtn').style.display = 'block';
+        }
+
+        function selectLanguage(lang) {
+            currentLang = lang;
+            currentIndex = 0;
+            document.getElementById('languageSelection').style.display = 'none';
+            document.getElementById('invitationContent').style.display = 'flex';
+            updateImage();
+        }
+
+        function changeSlide(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = images[currentLang].length - 1;
+            } else if (currentIndex >= images[currentLang].length) {
+                currentIndex = 0;
+            }
+            updateImage();
+        }
+
+        function updateImage() {
+            document.getElementById('invitationImage').src = images[currentLang][currentIndex];
+        }
+
+        // العد التنازلي
         const targetDate = new Date("November 13, 2026 00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
@@ -176,15 +294,6 @@
                 document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             }
         }, 1000);
-
-        function startInvitation() {
-            const music = document.getElementById('bgMusic');
-            music.play().catch(error => console.log("Audio play blocked", error));
-            
-            document.getElementById('envelopeContainer').style.display = 'none';
-            document.getElementById('invitationContent').style.display = 'flex';
-            document.getElementById('musicToggleBtn').style.display = 'block';
-        }
 
         function toggleMusic() {
             const music = document.getElementById('bgMusic');
