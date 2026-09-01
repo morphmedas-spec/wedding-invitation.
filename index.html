@@ -112,7 +112,7 @@
         .invitation-content {
             display: none;
             width: 100%;
-            max-width: 360px; /* حجم متناسق مع التليفونات */
+            max-width: 360px;
             flex-direction: column;
             align-items: center;
             gap: 12px;
@@ -124,7 +124,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* الإطار الجديد بدون فراغات كحلة */
         .card-image-box {
             width: 100%;
             border: 2px solid #c5a059;
@@ -138,7 +137,7 @@
         
         .card-image-box img {
             width: 100%;
-            height: auto; /* كتخلي التصويرة تاخد العرض كامل وارتفاعها كيتأقلم بوحدو بلا فجوات */
+            height: auto;
             display: block;
             opacity: 1;
             transition: opacity 0.4s ease-in-out;
@@ -214,14 +213,12 @@
 
     <button class="music-toggle" id="musicToggleBtn" onclick="toggleMusic()">🔊 الموسيقى</button>
 
-    <!-- شاشة الظرف -->
     <div class="envelope-container" id="envelopeContainer" onclick="openEnvelope()">
         <div class="envelope">
             <div class="envelope-text">اضغط لفتح الدعوة ✉</div>
         </div>
     </div>
 
-    <!-- اختيار اللغة -->
     <div class="language-selection" id="languageSelection">
         <div class="lang-title">المرجو اختيار لغة الدعوة</div>
         <button class="lang-btn" onclick="selectLanguage('ar')">العربية 🇲🇦</button>
@@ -229,161 +226,4 @@
         <button class="lang-btn" onclick="selectLanguage('en')">English 🇬🇧</button>
     </div>
 
-    <!-- محتوى الدعوة -->
-    <div class="invitation-content" id="invitationContent">
-        <div class="card-image-box" id="imageBox">
-            <img id="invitationImage" src="" alt="دعوة زفاف">
-        </div>
-
-        <div class="slider-nav">
-            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">السابق</button>
-            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">التالي</button>
-        </div>
-
-        <div class="countdown-card">
-            <div class="countdown-title" id="countdownTitle">العد التنازلي لليلة العمر ❤️</div>
-            <div class="countdown-box">
-                <div class="time-block"><div class="time-num" id="days">00</div><div class="time-label" id="labelDays">يوم</div></div>
-                <div class="time-block"><div class="time-num" id="hours">00</div><div class="time-label" id="labelHours">ساعة</div></div>
-                <div class="time-block"><div class="time-num" id="mins">00</div><div class="time-label" id="labelMins">دقيقة</div></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentLang = 'ar';
-        let currentIndex = 0;
-        
-        const images = {
-            ar: ['ZAINAB/AR/ar-1.jpeg', 'ZAINAB/AR/ar-2.jpeg', 'ZAINAB/AR/ar-3.jpeg'],
-            fr: ['ZAINAB/FR/fr-1.jpeg', 'ZAINAB/FR/fr-2.jpeg', 'ZAINAB/FR/fr-3.jpeg'],
-            en: ['ZAINAB/ENG/eng-1.jpeg', 'ZAINAB/ENG/eng-2.jpeg', 'ZAINAB/ENG/eng-3.jpeg']
-        };
-
-        const texts = {
-            ar: {
-                prev: '▶ السابق',
-                next: 'التالي ◀',
-                countdown: 'العد التنازلي لليلة العمر ❤️',
-                days: 'يوم',
-                hours: 'ساعة',
-                mins: 'دقيقة'
-            },
-            fr: {
-                prev: '▶ Précédent',
-                next: 'Suivant ◀',
-                countdown: 'Compte à rebours du grand jour ❤️',
-                days: 'Jours',
-                hours: 'Heures',
-                mins: 'Minutes'
-            },
-            en: {
-                prev: '▶ Previous',
-                next: 'Next ◀',
-                countdown: 'Countdown to the big day ❤️',
-                days: 'Days',
-                hours: 'Hours',
-                mins: 'Mins'
-            }
-        };
-
-        function openEnvelope() {
-            const music = document.getElementById('bgMusic');
-            music.play().catch(error => console.log("Audio play blocked", error));
-            
-            document.getElementById('envelopeContainer').style.display = 'none';
-            document.getElementById('languageSelection').style.display = 'flex';
-            document.getElementById('musicToggleBtn').style.display = 'block';
-        }
-
-        function selectLanguage(lang) {
-            currentLang = lang;
-            currentIndex = 0;
-            
-            const bodyTag = document.getElementById('bodyTag');
-            if (lang === 'ar') {
-                bodyTag.dir = 'rtl';
-                bodyTag.style.textAlign = 'right';
-            } else {
-                bodyTag.dir = 'ltr';
-                bodyTag.style.textAlign = 'left';
-            }
-
-            document.getElementById('prevBtn').innerText = texts[lang].prev;
-            document.getElementById('nextBtn').innerText = texts[lang].next;
-            document.getElementById('countdownTitle').innerText = texts[lang].countdown;
-            document.getElementById('labelDays').innerText = texts[lang].days;
-            document.getElementById('labelHours').innerText = texts[lang].hours;
-            document.getElementById('labelMins').innerText = texts[lang].mins;
-
-            document.getElementById('languageSelection').style.display = 'none';
-            document.getElementById('invitationContent').style.display = 'flex';
-            updateImage();
-        }
-
-        function changeSlide(direction) {
-            currentIndex += direction;
-            if (currentIndex < 0) {
-                currentIndex = images[currentLang].length - 1;
-            } else if (currentIndex >= images[currentLang].length) {
-                currentIndex = 0;
-            }
-            updateImage();
-        }
-
-        function updateImage() {
-            const imgElement = document.getElementById('invitationImage');
-            imgElement.classList.add('fade-out');
-            setTimeout(() => {
-                imgElement.src = images[currentLang][currentIndex];
-                imgElement.classList.remove('fade-out');
-            }, 300);
-        }
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        const imageBox = document.getElementById('imageBox');
-        imageBox.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        imageBox.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                changeSlide(1);
-            }
-            if (touchEndX > touchStartX + 50) {
-                changeSlide(-1);
-            }
-        }
-
-        const targetDate = new Date("November 13, 2026 00:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            if (diff > 0) {
-                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            }
-        }, 1000);
-
-        function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicToggleBtn');
-            if (music.paused) {
-                music.play();
-                btn.innerText = currentLang === 'ar' ? "🔊 الموسيقى" : (currentLang === 'fr' ? "🔊 Musique" : "🔊 Music");
-            } else {
-                music.pause();
-                btn.innerText = currentLang === 'ar' ? "🔇 صامت" : (currentLang === 'fr' ? "🔇 Muet" : "🔇 Muted");
-            }
-        }
-    </script>
-</body>
-</html>
+    <div class
